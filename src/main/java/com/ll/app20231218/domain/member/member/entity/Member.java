@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -32,4 +33,8 @@ public class Member {
     private LocalDateTime modifyDate;
     private String username;
     private String password;
+
+    public List<String> getAuthoritiesAsStringList() {
+        return List.of("ROLE_MEMBER");
+    }
 }
