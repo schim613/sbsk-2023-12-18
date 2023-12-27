@@ -22,8 +22,9 @@
 
         fetch('http://localhost:8090/api/v1/members/login', {
             method: 'POST',
+            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 username: form.username.value,

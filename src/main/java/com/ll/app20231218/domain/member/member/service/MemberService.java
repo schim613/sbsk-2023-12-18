@@ -4,6 +4,7 @@ import com.ll.app20231218.domain.member.member.entity.Member;
 import com.ll.app20231218.domain.member.member.repository.MemberRepository;
 import com.ll.app20231218.global.exceptions.GlobalException;
 import com.ll.app20231218.global.rsData.RsData;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,16 +39,12 @@ public class MemberService {
         return passwordEncoder.matches(password, member.getPassword());
     }
 
+    @AllArgsConstructor
     @Getter
     public static class AuthAndMakeTonkensResponseBody {
+        private Member member;
         private String accessToken;
         private String refreshToken;
-
-        public AuthAndMakeTonkensResponseBody(String accessToken, String refreshToken) {
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
-        }
-
     }
 
     @Transactional
@@ -64,7 +61,7 @@ public class MemberService {
         return RsData.of(
                 "200-1",
                 "로그인 성공",
-                new AuthAndMakeTonkensResponseBody(accessToken, refreshToken)
+                new AuthAndMakeTonkensResponseBody(member, accessToken, refreshToken)
         );
     }
 }

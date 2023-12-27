@@ -1,6 +1,8 @@
 package com.ll.app20231218.domain.member.member.controller;
 
+import com.ll.app20231218.domain.member.member.dto.MemberDto;
 import com.ll.app20231218.domain.member.member.service.MemberService;
+import com.ll.app20231218.global.rq.Rq.Rq;
 import com.ll.app20231218.global.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -18,15 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ApiV1MembersController {
     private final MemberService memberService;
+    private final Rq rq;
 
     @AllArgsConstructor
     @Getter
     public static
     class LoginResponseBody {
-        @NotBlank
-        private String accessToken;
-        @NotBlank
-        private String refreshToken;
+        private MemberDto item;
     }
 
     @Getter
@@ -44,12 +44,16 @@ public class ApiV1MembersController {
     ) {
         RsData<MemberService.AuthAndMakeTonkensResponseBody> authAndMakeTonkensRs = memberService.authAndMakeTokens(body.getUsername(), body.getPassword());
 
+        rq.setCrossDomainCookie("accessToken", authAndMakeTonkensRs.getData().getAccessToken());
+        rq.setCrossDomainCookie("refreshToken", authAndMakeTonkensRs.getData().getRefreshToken());
+
         return RsData.of(
                 authAndMakeTonkensRs.getResultCode(),
                 authAndMakeTonkensRs.getMsg(),
                 new LoginResponseBody(
-                        authAndMakeTonkensRs.getData().getAccessToken(),
-                        authAndMakeTonkensRs.getData().getRefreshToken()
+                        new MemberDto(
+                                authAndMakeTonkensRs.getData().getMember()
+                        )
                 )
         );
     }

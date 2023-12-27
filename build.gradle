@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.example'
+group = 'com.ll'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     // DEV TOOLS
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -56,6 +58,9 @@ dependencies {
 
     // TEST
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // 스프링Doc
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 }
 
 tasks.named('test') {
